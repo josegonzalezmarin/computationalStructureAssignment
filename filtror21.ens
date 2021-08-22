@@ -1,0 +1,858 @@
+; 	Pila
+			org 0xF000
+PILA:		data 0
+
+IM1 :
+				data 	4, 8
+				data 	0x00000000, 0x00000000
+				data 	0x00000001, 0x00000000
+				data 	0x00000001, 0x00000000
+				data 	0x00000001, 0x00000000
+;				Matriz IM1: (hexadecimal y Little Endien)
+;					4 x 8
+;					00 00 00 00 00 00 00 00
+;					01 00 00 00 00 00 00 00
+;					00 00 00 00 00 00 00 00
+;					00 00 00 00 00 00 00 00
+
+
+IM2 :
+				data 	4, 8
+				data 	0x00000000, 0x00000000
+				data 	0x00000000, 0x00000000
+				data 	0x00000000, 0x00000000
+				data 	0x00000000, 0x00000000
+;				Matriz IM2: (hexadecimal y Little Endian)
+;					4 x 8
+;					00 00 00 00 00 00 00 00
+;					00 00 00 00 00 00 00 00
+;					00 00 00 00 00 00 00 00
+;					00 00 00 00 00 00 00 00
+
+
+				IM3:
+								data 	4, 8
+								data 	0xFF00FF00, 0x00FF00FF
+								data 	0xFF00FF00, 0x00FF00FF
+								data	0xFF00FF00, 0x00FF00FF
+								data 	0xFF00FF00, 0x00FF00FF
+									
+				SUBIM1:
+								data 	0x00000000, 0x00000055, 0x00
+								
+				FILTRO:
+								data 0, 1, 0, 1, 0, 1
+								data 0, 1, 1, 1, 0, 1
+								data 0, 1, 0, 1, 0, 1
+;				Matriz IM3: (hexadecimal y Little Endian)
+;					4 x 8
+;					00 FF 00 FF FF 00 FF 00
+;					00 FF 00 FF FF 00 FF 00
+;					00 FF 00 FF FF 00 FF 00
+;					00 FF 00 FF FF 00 FF 00
+
+			ImagenValorPixel:
+			data 0x00000000, 0x00000055, 0x00
+
+			FiltroValorPixel: 
+			data 0, 1, 0, 1, 0, 1
+			data 0, 1, 1, 1, 0, 1
+			data 0, 1, 0, 1, 0, 1
+			
+			IVP2:
+			data  0x00000000, 0x00000055, 0x00
+
+			FVP2:
+			data 0x00000000, 0x00000001
+			data 0x00000000, 0x00000001
+			data 0x00000000, 0x00000001
+			data 0x00000000, 0x00000001
+			data 0x00000002, 0xFFFFFFFF
+			data 0x00000000, 0x00000001
+			data 0x00000000, 0x00000001 
+			data 0x00000000, 0x00000001
+			data 0x00000000, 0x00000001
+
+			IVP3:
+			data 0x13121110, 0x17161514, 0x00000018
+
+			FVP3:
+			data 0x00000002, 0xFFFFFFFF
+			data 0xFFFFFFFE, 0x00000001
+			data 0x00000002, 0xFFFFFFFF
+			data 0xFFFFFFFE, 0x00000001
+			data 0x00000000, 0x00000001
+			data 0xFFFFFFFE, 0x00000001
+			data 0x00000002, 0xFFFFFFFF
+			data 0xFFFFFFFE, 0x00000001
+			data 0x00000002, 0xFFFFFFFF
+
+			IM4:
+			data 3, 3
+			data 0x40302010, 0x80706050, 0x90
+
+			IM5:
+			data 5,8
+
+			data 0x04030201, 0x08070605
+			data 0x0C0B0A09, 0x100F0E0D
+			data 0x14131211, 0x18171615
+			data 0x1C1B1A19, 0x201F1E1D
+			data 0x24232221, 0x28272625
+			
+			SUBIM2:
+			data 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
+			
+;;;	Pruebas FilPixel
+			IMFilPix1:
+			data 5, 5
+			data 0x44332211, 0x03020155
+			data 0x22210504, 0x31252423
+			data 0x35343332, 0x44434241
+			data 0x00000045
+			FiltFilPix1: data 0, 1, 0, 1, 0, 1
+			data 0, 1, -5, -5, 0, 1
+			data 0, 1, 0, 1, 0, 1
+;			Resultado: para el elemento 14
+;			r30=86000 (0x14FF0) r29=36 (0x24)
+			FiltFilPix2: data 0, 1, 0, 1, 0, 1
+			data 0, 1, 1, 2, 0, 1
+			data 0, 1, 0, 1, 0, 1
+			
+;	Pruebas Filtro
+			IMFil1:
+			data 4, 8
+			data 0x04030201, 0x07060504
+			data 0x14134211, 0x17168514
+			data 0x24232221, 0x27262574
+			data 0x34333231, 0x37363534
+			FILTRADAFil1:
+			res 40
+			FILTROFil1: data 0, 1, -3, 1, 0, 1
+			data 0, 1, 4, 1, 0, 1
+			data 0, 1, 0, 1, 0, 1
+;	Pruebas FiltRec
+			IMFil2:
+			data 5, 5
+			data 0x000A000A, 0x0000000A
+			data 0x000A0000, 0x000A000A
+			data 0x00000000, 0x000A000A
+			data 0x0000000A
+			FILTROFil2: data 0, 1, 0, 1, 0, 1
+			data 0, 1, 1, 2, 0, 1
+			data 0, 1, 0, 1, 0, 1
+			FILTRADAFil2:
+			res 36
+			data 0x55555555, 0x55555555
+
+			IMFil3:
+			data 4, 4
+			data 0x04030201, 0x0D0E0F10, 0x05040302, 0x23222120
+			FILTROFil3: data 1, 8, 1, 8, 1, 8
+			data 1, 8, 0, 8, 1, 8
+			data 1, 8, 1, 8, 1, 8
+			FILTRADAFil3: res 24
+			data 0x55555555, 0x55555555
+			
+			IMFil4: data 4, 8
+			data 0xFF0201FF, 0xFF0403FF
+			data 0xFF0605FF, 0xFF0807FF
+			data 0xFF0605FF, 0xFF0807FF
+			data 0xFF0201FF, 0xFF0403FF
+			FILTROFil4: data 1, 8, 1, 8, 1, 8
+			data 1, 8, 0, 8, 1, 8
+			data 1, 8, 1, 8, 1, 8		
+			FILTRADAFil4: res 40
+			data 0x55555555, 0x55555555
+			
+			IMFil5: data 4, 8
+			data 0xFF0000FF, 0xFF0000FF
+			data 0xFF0000FF, 0xFF0000FF
+			data 0xFF0000FF, 0xFF0000FF
+			data 0xFF0000FF, 0xFF0000FF
+			FILTROFil5: data 1, 4, 0, 1, 1, 4
+			data 0, 1, 0, 1, 0, 1
+			data 1, 4, 0, 1, 1, 4		
+			FILTRADAFil5: res 40
+			data 0x55555555, 0x55555555
+			
+			
+
+PUSH: MACRO(ra)
+	subu r30, r30, 4
+	st ra, r30, 0
+	ENDMACRO
+POP: MACRO(ra)
+	ld ra, r30, 0
+	addu r30, r30, 4
+	ENDMACRO
+LEA: MACRO (ra, eti)
+	or ra, r0, low(eti)
+	or.u ra, ra, high(eti)
+	ENDMACRO
+
+LOAD: MACRO (ra, eti)
+	LEA (ra, eti)
+	ld ra, ra, r0
+	ENDMACRO
+
+
+DBNZ: MACRO  (reg, ETIQ)
+	sub    reg, reg, 1
+	cmp    r2, reg, r0
+	bb0    eq, r2, ETIQ
+	ENDMACRO
+
+P_ent:		LEA(r30, PILA)
+			bsr pp_nFiltrados
+			bsr pp_Sqrt1d
+			bsr pp_Comp
+			bsr pp_Vpix
+			bsr pp_SubM
+			bsr pp_FPix
+			bsr pp_Fil
+			bsr pp_FiltRec
+			stop
+
+
+pp_nFiltrados:	PUSH(r1)
+			PUSH(r31)
+			or r31, r30, r30
+			; Prueba 1
+			or r9, r0, r0
+			PUSH(r9)
+			bsr nFiltrados
+			; Prueba 2
+			; addu r9, r9, 1
+			; PUSH(r9)
+			; bsr nFiltrados
+			; Prueba 3
+			; subu r9, r9, 5
+			; PUSH(r9)
+			; bsr nFiltrados
+			; Prueba 4
+			; addu r9, r9, 77
+			; PUSH(r9)
+			; bsr nFiltrados
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1
+
+pp_Sqrt1d:	PUSH(r1)
+			PUSH(r31)
+			; Prueba 1
+			or r31, r30, 0
+			or r9, r0, 0
+			addu r9, r9, 1
+			PUSH(r9)
+			bsr Sqrt1d
+			; Prueba 2
+			addu r9, r9, 1
+			PUSH(r9)
+			bsr Sqrt1d
+			; Prueba 3
+			addu r9, r9, 98
+			PUSH(r9)
+			bsr Sqrt1d
+			; Prueba 4
+			subu r9, r9, 77
+			PUSH(r9)
+			bsr Sqrt1d
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1
+			
+pp_Comp:	PUSH(r1)
+			PUSH(r31)
+			or r31, r30, 0
+			; Preuba 1
+			LEA(r4, IM1)
+			PUSH(r4)
+			LEA(r4, IM2)
+			PUSH(r4)
+			bsr Comp
+			;;
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1
+			
+pp_Vpix:	PUSH(r1)
+			PUSH(r31)
+			or r31, r30, 0
+			; Prueba 1
+			LEA(r2, FILTRO)
+			LEA(r3, SUBIM1)
+			LEA(r2, FVP2)
+			LEA(r3, IVP2)
+			LEA(r2, FVP3)
+			LEA(r3, IVP3)
+			PUSH(r2)
+			PUSH(r3)
+			bsr ValorPixel
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1
+			
+pp_SubM:	PUSH(r1)
+			PUSH(r31)
+			or r31, r30, 0
+			; Prueba 1
+			or r3, r0, 6
+			PUSH(r3)
+			or r3, r0, 3
+			PUSH(r3)
+			LEA(r3, SUBIM2)
+			PUSH(r3)
+			LEA(r3, IM5)
+			PUSH(r3)
+			bsr SubMatriz
+			; Preuba 2
+			or r30, r31, r0
+			or r3, r0, 1
+			PUSH(r3)
+			PUSH(r3)
+			LEA(r3, SUBIM2)
+			PUSH(r3)
+			LEA(r3, IM4)
+			PUSH(r3)
+			bsr SubMatriz
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1
+			
+pp_FPix:	PUSH(r1)
+			PUSH(r31)
+			or r31, r30, 0	
+			; Prueba 1
+			LEA(r3, FiltFilPix1)
+			PUSH(r3)
+			or r3, r0 ,3
+			PUSH(r3)
+			or r3, r0 ,2
+			PUSH(r3)
+			LEA(r3, IMFilPix1)
+			PUSH(r3)
+			bsr FilPixel
+			; Preuba 2
+			LEA(r3, FiltFilPix2)
+			PUSH(r3)
+			or r3, r0 ,3
+			PUSH(r3)
+			or r3, r0 ,2
+			PUSH(r3)
+			LEA(r3, IMFilPix1)
+			PUSH(r3)
+			bsr FilPixel
+			; Prueba 3
+			LEA(r3, FiltFilPix2)
+			PUSH(r3)
+			or r3, r0 ,0
+			PUSH(r3)
+			or r3, r0 ,0
+			PUSH(r3)
+			LEA(r3, IMFilPix1)
+			PUSH(r3)
+			bsr FilPixel	
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1
+
+pp_Fil:		PUSH(r1)
+			PUSH(r31)
+			or r31, r30, 0
+			; Prueba 1
+			LEA(r3, FILTROFil1)
+			PUSH(r3)
+			LEA(r3, FILTRADAFil1)
+			PUSH(r3)
+			LEA(r3, IMFil1)
+			PUSH(r3)
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1	
+
+pp_FiltRec:	PUSH(r1)
+			PUSH(r31)
+			or r31, r30, 0
+			PUSH(r0)
+			bsr nFiltrados
+			; Prueba 1
+			or r3, r0, 2
+			PUSH(r3)
+			or r3, r0, 0
+			PUSH(r3)
+			LEA(r3, FILTROFil5)
+			PUSH(r3)
+			LEA(r3, FILTRADAFil5)
+			PUSH(r3)
+			LEA(r3, IMFil5)
+			PUSH(r3)
+			bsr FiltRec
+			;
+			; PUSH(r0)
+			; bsr nFiltrados
+			; ; Prueba 2
+			; or r3, r0, 5
+			; PUSH(r3)
+			; or r3, r0, 20
+			; PUSH(r3)
+			; LEA(r3, FILTROFil2)
+			; PUSH(r3)
+			; LEA(r3, FILTRADAFil2)
+			; PUSH(r3)
+			; LEA(r3, IMFil2)
+			; PUSH(r3)
+			; bsr FiltRec
+			;;
+			; PUSH(r0)
+			; bsr nFiltrados
+			; Prueba 3
+			; or r3, r0, 4;4
+			; PUSH(r3)
+			; or r3, r0, 400;400
+			; PUSH(r3)
+			; LEA(r3, FILTROFil3)
+			; PUSH(r3)
+			; LEA(r3, FILTRADAFil3)
+			; PUSH(r3)
+			; LEA(r3, IMFil3)
+			; PUSH(r3)
+			; bsr FiltRec
+			; ;;
+			; PUSH(r0)
+			; bsr nFiltrados
+			; ; Prueba 4
+			; or r3, r0, 3;4
+			; PUSH(r3)
+			; or r3, r0, 0;400
+			; PUSH(r3)
+			; LEA(r3, FILTROFil4)
+			; PUSH(r3)
+			; LEA(r3, FILTRADAFil4)
+			; PUSH(r3)
+			; LEA(r3, IMFil4)
+			; PUSH(r3)
+			; bsr FiltRec
+			;;
+			or r30, r31, r0
+			POP(r31)
+			POP(r1)
+			jmp(r1);vuelta a r1				
+
+; NFiltrados = nFiltrados ( oper )
+;	r0 = nF
+;	r3 = tmp de comparaciones
+;	r4 = oper
+nFiltrados:	ld r4, r30, 0; Guradamos en r4 la variable	oper
+			cmp r3, r4, r0; Comparamos oper con 0											oper>0
+			bb1 ge, r3, nF_end; oper>0														if true ==> nF_end()
+			ld r4, r0, 0; cargamos en oper nF												oper = nF
+			add r4, r4, 1; aumentamos en 1 a nF												nF++
+nF_end:		st r4, r0, 0; guardamos en nF el valor de oper									nF = oper
+			or r29, r4, r0; guardamos en r29 el valor de salida								return oper
+			jmp(r1);																		"volver a r1"
+
+; rc = Sqrt1d ( Num )
+;	r3 = temporal
+;	r4 = Num
+;	r5 = a
+;	r6 = b
+;
+Sqrt1d: 	ld  r4, r30, 8	;Guardamos en r4 Num											int Num = Mem(r30)
+			cmp r3, r4, 2	;Comparamos el numero											entrada<2
+			bb1 lt, r3, Lower; Si es menor saltamos a Lower									if true => lower()
+			mulu r5, r4, 100; Multiplicamos Num por 100 y lo guardamos en r5 que será A		int a = Num*100
+			or r6, r0, 1; Ponemos un 1 en r6 que será B										int b = 1
+Sqrt1dBUC:	add r5, r5, r6; a+b																a+=b
+			divu r5,r5, 2; a/2																a=a/2
+			mulu r6, r4, 100; ponemos en b Num *100											b=Num*100
+			divu r6, r6, r5; dividimos la operación anterior entre a						b=b/a
+			cmp r3, r6, r5; Comparamos b con a 												b<=a
+			bb1 le, r3, noSwap; Si es menor a no realizamos intercambio						if true => noIntercambio()
+			or r3, r5, r0; Guardamos en un  registro temporalmente A						int tmp = a
+			or r5, r6, r0; Almacenamos b en a												a = b
+			or r6, r3, r0; Almacenamos a en b												b = tmp
+noSwap:		subu r3, r5, r6; Restamos 'b' a 'a'												int cmp = a - b
+			cmp r3, r3, 1; comparamos los dos												cmp>1
+			bb1 gt, r3, Sqrt1dBUC; Si es mayor volvemos al bucle							if true => Sqrt1dBUC()
+			br Sqrt1d_end; salto a salida													salir()
+Lower:		mulu r6, r4, 10; multiplicamos por 10 la entrada y lo asignamos a b				b = entrada * 10
+Sqrt1d_end:	or r29, r6, r0; copiamos en la variable de vuelta el resultado					return b
+			jmp(r1);vuelta a r1
+
+
+;	Comp( Imagen 1, Imagen 2)
+;
+;	r3 = cantidad de elementos (m*n)
+;
+;	r4 = valor del elemento en ij de imagen1
+;	r5 = valor del elemento en ij de imagen2
+;
+;	r7 = cmp y temporal
+;
+;	r22 = imagen1
+;	r23 = imagen2
+;
+;	r29 = dif y retorno
+
+Comp: 		PUSH(r1); metemos el retorno
+			ld r3, r30, 8; cargamos la dirección de Imagen 1							imagen1 = Mem(r3)
+			addu r22, r3, 8; cargamos la direeción del primer elemento					imagen1 = /imagen1(0x0)
+			ld r21, r3, 4; cargamos la cantidad de columnas								n = r21
+			ld r3, r3, 0; cargamos la cantidad de filas									m = r3
+			mulu r3, r3, r21;															elementos = m*n
+			ld r23, r30, 12; crgamos en r23 la direcciónde imagen 2						imagen2 = Mem(r23)
+			addu r23, r23, 8; cargamos la direccion del primer elemento de la lista		imagen2 = /imagen2(0x0)
+			or r29, r0, r0; inicializamos el valor de retorno a 0						ret = 0
+buc_comp_fil:	cmp r7, r3, r0; comprobamos si ha terminado de leer llos elementos		elementos==0
+			bb1 eq, r7, fin_comp; si es igual acabamos el bucle							if true --> fin_comp()
+			ld.bu r4, r22, 0; cargamos el elemento de la imagen 1						pix1 = imagen1[i][j]
+			ld.bu r5, r23, 0; cargamos el elemento de la imagen 2						pix2 = imagen2[i][j]
+			sub r4, r4, r5; modificamos													dif = pix1 - pix2
+			muls r4, r4, r4; el valor													dif = dif^2
+			addu r29, r29, r4; final													ret += dif
+			addu r22, r22, 1; modificacmos las direcciones								imagen1 = /imagen1() + 1
+			addu r23, r23, 1; modificacmos las direcciones								imagen2 = /imagen2() + 1
+			subu r3, r3, 1; sumamos un 1 a columnas leidas								elementos -= 1
+			br buc_comp_fil; continuamos con la lectura									buc_comp_fil()
+fin_comp:	PUSH(r29); pasamos el parámetro a la función
+			bsr Sqrt1d; llamamos a la función											Sqrt1d(dif)
+			addu r30, r30, 4
+			POP(r1)
+			jmp(r1); retorno															return
+
+;	ValorPixel( SubImg, MFiltro )
+;
+;	r2 = elementos (3x3)
+;
+;	r4 = valor del elemento en ij de SubImg
+;	r5 = valor del elemento en ij de MFiltro
+;
+;	r7 = comparaciones y temporal
+;
+;	r22 = SubImg
+;	r23 = MFiltro
+;
+;	r29 = valor retorno y acumulador(Acc)
+ValorPixel:	PUSH(r1)
+			ld r22, r30, 4; cargamos el valor de SubImg									SubImg = M(r30+4)				
+			ld r23, r30, 8; cargamos el valor de MFiltro								MFiltor = M(r30+8)
+			or r2, r0, 9; inicializamos i(fila actual a 0)								int elem = 0
+			or r29, r0, r0; inicializamos a 0											int ret = 0
+bucle_valP:	cmp r7, r2, 0; comprobamos si ha terminado de leer las filas				elem == 0		
+			bb1 eq, r7, fin_valP; si es igual acabamos el bucle							if true --> fin_valP
+			ld.bu r4, r22, r0; cargamos el elemento de la imagen 1						r4 = M(SubImg)
+			ld r5, r23, r0; cragamos el elemento del filtro								r5 = M(MFiltro)
+			mulu r4, r4, 256; multiplicamos por 256										r4 *= 256
+			muls r4, r4, r5; multiplicamos los valores de la primera matriz por el numerador	r4 *= r5
+			addu r23, r23, 4; sumamos 4 para acceder al denominador						MFiltor+=1
+			ld r5, r23, r0; cargamos el elemento del filtro								r5 = M(MFiltro)
+			divs r4, r4, r5; dividimos por el denominador								r4 /= r5
+			add r29, r29, r4; acumulamos el valor										ret+=r4
+			addu r22, r22, 1; sumamos un 1 a columnas leidas							SubImg++
+			addu r23, r23, 4; sumamos un 1 a columnas leidas							MFiltor++
+			subu r2, r2, 1;																elementos--
+			br bucle_valP; continuamos con la lectura									bucle_valP_col()
+fin_valP:	divs r29, r29, 256; dividimos el acumulador entre 256						ret/=256
+			POP(r1)
+			jmp(r1); volvemos
+			
+;	SubMatriz( Imagen, SubImagen, i, j )
+;
+;	r2 = k (filas)
+;	r3 = l (columnas)
+;
+;	r4 = valor del elemento en kl de SubImg
+;
+;	r7 = col inicial
+;
+;	r8 = comparaciones y temporal
+;
+;	r20 = i (filas)
+;	r21 = j (columnas)
+;
+;	r22 = Imagen
+;	r23 = SubImg
+;
+;	r24 = contador filas
+;	r25 = contador columnas
+SubMatriz:	PUSH(r1)
+			ld r22, r30, 4; cargamos la direccion de la imagen
+			ld r23, r30, 8; cargamos la direccion de subimg
+			ld r20, r22, 0; cargamos i 
+			ld r21, r22, 4; cargamos j
+			ld r2, r30, 12
+			ld r3, r30, 16
+			subu r2, r2, 1; posicionamos k en el primer valor
+			subu r3, r3, 1; posicionamos l en el primer valor
+			addu r22, r22, 8
+			or r24, r0, 0
+			or r25, r0, 0
+			mulu r7, r2, r21; Calculamos k*j
+			addu r7, r7, r3
+Buc_Sub_Fil: cmp r8, r24, 3; comprobamos que l esta en el ultimo valor
+			bb1 eq, r8, fin_sub; si es igual acaba la ejecución
+			or r25, r0, 0
+Buc_Sub_Col: cmp r8, r25, 3; comprobamos que ha leido las columnas
+			bb1 eq, r8, SigFilSub; si es true pasamos a la siguiente fila
+			ld.bu r4, r22, r7;leemos el pixel
+			st.b r4, r23, r0;guardamos el pixel
+			addu r7, r7, 1; cambiamos el puntero de la proxima linea
+			addu r25, r25, 1
+			addu r23, r23, 1; aumentamos el puntero de la proxima linea
+			br Buc_Sub_Col; volvemos al bucle
+fin_sub:	POP(r1)
+			jmp(r1)
+
+SigFilSub:	addu r7, r7, r21
+			subu r7, r7, 3
+			addu r24, r24, 1
+			br Buc_Sub_Fil
+
+;	VPixel = FilPixel ( Imagen, i, j, MFiltro )
+;
+;	r2 = i
+;	r3 = j
+;
+;	r7 = pixel usado
+;
+;	r8 = comparaciones y temporal
+;	r9 = temporal
+;
+;	r20 = k (filas) de imagen
+;	r21 = l (columnas) de imagen
+;
+;	r22 = Imagen
+;	r23 = MFiltro
+FilPixel:	PUSH(r1)
+			PUSH(r31); guardamos el antiguo marco de pila
+			or r31, r30, 0; ponemos el nuevo marco de pila
+			ld r22, r30, 8; cargamos la direccion de la imagen
+			ld r23, r30, 20; cargamos la direccion de MFiltro
+			ld r20, r22, 0; cargamos i 
+			ld r21, r22, 4; cargamos j
+			ld r2, r30, 12; cargamos k
+			ld r3, r30, 16; cargamos l
+			mulu r7, r2, r21; Calculamos k*j para
+			addu r7, r7, r3;  obtener el elemento que buscamos
+			mulu r9, r2, r3; multiplicamos i*j
+			cmp r8, r9, 0; comparamos la multiplicacion dado que sin uno de los 2 es 0 la solucion sera 0 porque esta en el borde
+			bb1 eq, r8, enBorde
+			subu r9, r20, 1; 		comprobamos 
+			cmp r8, r9, r2; 		que
+			bb1 eq, r8, enBorde; 	no
+			subu r9, r21, 1; 		esta
+			cmp r8, r9, r3; 		en los otros
+			bb1 eq, r8, enBorde; 	bordes
+			subu r30, r30, 12; reservamos memoria para la matriz
+			or r8, r30, r30; guardamos el valor de la reserva
+			PUSH(r23);	pasamos los valores 
+			PUSH(r8);		de ValorPixel
+			PUSH(r3);	pasamos 
+			PUSH(r2);		los 
+			PUSH(r8);		valores de	
+			PUSH(r22);		SubMatriz
+			bsr SubMatriz; Llamamos a submatriz		
+			addu r30, r30, 16; recuperamos la pila a donde se encuentran los parámetros de ValorPixel		
+			bsr ValorPixel; Lamar a ValorPixel
+			cmp r8, r29, 0
+			bb1 lt, r8, ajustNeg 
+			cmp r8, r29, 255
+			bb1 gt, r8, ajustExc 
+fin_FP:		or r30, r31, r0; restauramos marco de pila
+			POP(r31); sacamos el antiguo marco de la pila
+			POP(r1); sacamos el retorno
+			jmp(r1)
+			
+enBorde:	addu r22, r22, 8
+			ld.bu r29, r22, r7
+			br fin_FP
+
+ajustNeg: 	or r29, r0, r0
+			br fin_FP
+ajustExc:	or r29, r0, 0xFF
+			br fin_FP
+
+; Filtro ( Imagen, ImFiltrada, MFiltro )
+;
+;	r3 = i filas
+; 	r4 = j columnas
+;
+;	r5 = contador
+;	r6 = contador
+;
+;	r7 = comparacion y temporal
+;
+;	r22 = 	Imagen
+;	r23 =	ImFiltrada
+;	r24 =	MFiltro
+;
+Filtro:		PUSH(r1)
+			PUSH(r31); guardamos el antiguo marco de pila
+			or r31, r30, 0; ponemos el nuevo marco de pila
+			ld r22, r30, 8; cargamos la direccion de la imagen
+			ld r23, r30, 12; cargamos la direccion de ImFiltrada
+			ld r3, r22, 0; cargamos i 
+			ld r4, r22, 4; cargamos j
+			st r3, r23, 0; gurdamos i y j en ImFiltrada
+			st r4, r23, 4;
+			ld r24, r30, 16; cargamos la dirección de MFiltro							imagen1 = Mem(r3)
+			addu r23, r23, 8; cargamos la direccion del primer elemento de la lista		imagen2 = /imagen2(0x0)
+			or r5, r0, r0
+			or r6, r0, r0
+buc_fil_fil: cmp r7, r3, r5; comprobamos si ha terminado de leer llos elementos		elementos==0
+			bb1 eq, r7, fin_fil; si es igual acabamos el bucle							if true --> fin_comp()
+			or r6, r0, r0
+buc_col_fil: cmp r7, r4, r6; comprobamos si ha terminado de leer llos elementos		elementos==0
+			bb1 eq, r7, SigFilFil; si es igual acabamos el bucle							if true --> fin_comp()
+			;;; Guardamos datos
+			PUSH(r5)
+			PUSH(r6)
+			PUSH(r22)
+			PUSH(r23)
+			;;;; Cragamos valores
+			PUSH(r24)
+			PUSH(r6)
+			PUSH(r5)
+			PUSH(r22)
+			bsr FilPixel
+			;;;; Recupermaos datos
+			addu r30, r30, 16
+			POP(r23)	
+			POP(r22)	
+			POP(r6)	
+			POP(r5)
+			ld r3, r22, 0; cargamos i 
+			ld r4, r22, 4; cargamos j	
+			ld r24, r30, 16; cargamos la dirección de MFiltro			
+			st.b r29, r23, r0	
+			;; Preparacion siguiente fila
+guardado:	addu r23, r23, 1; modificacmos las direcciones								imagen2 = /imagen2() + 1	
+			addu r6, r6, 1
+			br buc_col_fil; continuamos con la lectura									buc_comp_fil()
+fin_fil:	or r30, r31, r0; restauramos marco de pila
+			POP(r31); sacamos el antiguo marco de la pila
+			POP(r1); sacamos el retorno
+			jmp(r1)
+			
+SigFilFil:	addu r5, r5, 1
+			br buc_fil_fil
+
+
+; Ret = FiltRec ( ImagenIn, ImagenOut, MFiltro, NCambios, MaxFiltrados )
+;
+;	r3 = NCambios
+; 	r4 = MaxFiltrados
+;
+;	r7 = comparacion y temporal
+;
+;	r22 = 	ImagenIn
+;	r23 =	ImagenOut
+;	r24 =	MFiltro
+;
+FiltRec:	PUSH(r1)
+			PUSH(r31); guardamos el antiguo marco de pila
+			or r31, r30, 0; ponemos el nuevo marco de pila
+			ld r22, r30, 8; cargamos la direccion de la imagen	
+			ld r23, r30, 12; cargamos la direccion de la imagen
+			ld r24, r30, 16; cargamos la direccion de la imagen	
+			ld r5, r22, 0
+			ld r6, r22, 4
+			mulu r7, r5, r6
+			or r9, r7, r7
+			;;resreva de memoria
+modulo_filr: cmp r8, r9, 4
+			bb1 lt, r8, fin_modul
+			subu r9, r9, 4
+			br modulo_filr
+fin_modul:	or r10, r0, 4
+			subu r9, r10, r9
+			addu r7, r7, r9
+			addu r7, r7, 8
+			subu r30, r30, r7
+			;; Datos iniciales matriz
+			st r5, r30, 0
+			st r6, r30, 4
+			;; Carga de datos
+			PUSH(r24)
+			PUSH(r23)
+			PUSH(r22)
+			bsr Filtro
+			;; Recuperacion de datos
+			POP(r22)
+			POP(r23)
+			addu r30, r30, 4
+			ld r5, r22, 0
+			ld r6, r22, 4
+			;; Copia de datos 
+			mulu r7, r5, r6
+			addu r7, r7, 7
+buc_copia:	cmp r8, r7, 7
+			bb1 eq, r8, fin_copia
+			ld.bu r8, r23, r7
+			st.b r8, r30, r7
+			subu r7, r7, 1
+			br buc_copia
+			;;lamar a comp para compobar cambios y llamara a nfiltrados
+			;; Carga de datos
+fin_copia:	PUSH(r23)
+			PUSH(r22)
+			bsr Comp
+			;; recupermaos datos
+			addu r30, r30, 8
+			ld r3, r31, 20; cargamos en r3 el valor de entrada de Ncambios
+			PUSH(r3); lo guardamos en pila
+			st r29, r31, 20; guardamos en r31 el valor de salida de Ncambios
+			or r8, r0, r0
+			sub r8, r8, 1
+			PUSH(r8); pasamos los parametros
+			bsr nFiltrados
+			;; recuperacion datos
+			addu r30, r30, 4
+			POP(r3)		
+			ld r4, r31, 24	;; cargamos en r4 el valor de entrada de MaxFiltrados	
+			st r29, r31, 24	;; guardamos el valor de salida en MaxFiltrados
+			ld r7, r31, 20	;; cargamos el valor de salida de NCambios
+			;; comprobaciones de ruptura
+			;	r3 = valor de entrada de Ncambios
+			;	r7 = valor de salida de Ncambios
+			;
+			;	r4 = valor de entrada de MaxFiltrados
+			;	r29 = valor de salida de MaxFiltrados
+			cmp r8, r7, r3
+			bb1 lt, r8, fin_cero
+			cmp r8, r29, r4
+			bb1 eq, r8, fin_neg	
+			;;; Carga datos Filtrec
+			or r8, r30, r30
+			PUSH(r4)
+			PUSH(r3)
+			ld r24, r31, 16
+			PUSH(r24)			
+			ld r23, r31, 12
+			PUSH(r23)
+			PUSH(r8)
+			bsr FiltRec
+			addu r30, r30, 12
+			POP(r3)
+			POP(r4)
+			st r3, r31, 20
+			st r4, r31, 24		
+fin_filrec:	or r30, r31, r0; restauramos marco de pila
+			POP(r31); sacamos el antiguo marco de la pila
+			POP(r1); sacamos el retorno
+			jmp(r1)
+			
+fin_cero:	or r29, r0, r0
+			br fin_filrec
+			
+fin_neg:	or r29, r0, r0
+			sub r29, r29, 1
+			br fin_filrec
